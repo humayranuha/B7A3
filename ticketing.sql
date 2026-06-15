@@ -38,3 +38,25 @@ CREATE TABLE Matches (
     -- Check constraint for match status
     CONSTRAINT chk_matches_status CHECK (match_status IN ('Available', 'Selling Fast', 'Sold Out', 'Postponed'))
 );
+
+-- =========================================================================
+-- 3. CREATE BOOKINGS TABLE
+-- =========================================================================
+CREATE TABLE Bookings (
+    booking_id INT,
+    user_id INT,
+    match_id INT,
+    seat_number VARCHAR(10),
+    payment_status VARCHAR(20),
+    total_cost DECIMAL(10,2),
+    
+    -- Primary Key constraint
+    CONSTRAINT pk_bookings PRIMARY KEY (booking_id),
+    -- Foreign Key constraints
+    CONSTRAINT fk_bookings_user FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    CONSTRAINT fk_bookings_match FOREIGN KEY (match_id) REFERENCES Matches(match_id),
+    -- Check constraint for total cost
+    CONSTRAINT chk_bookings_cost CHECK (total_cost >= 0),
+    -- Check constraint for payment status
+    CONSTRAINT chk_bookings_payment CHECK (payment_status IN ('Pending', 'Confirmed', 'Cancelled', 'Refunded'))
+);
